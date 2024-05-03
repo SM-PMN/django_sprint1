@@ -1,7 +1,3 @@
-from django.http import Http404
-from django.shortcuts import render  # type: ignore
-
-
 posts = [
     {
         "id": 0,
@@ -45,25 +41,7 @@ posts = [
     },
 ]
 
-# Если правильно понял, словарь {идентификатор: пост с таким идентификатором}
-new_posts = {post["id"]: post for post in posts}
 
+new_posts = {post['id']: post for post in posts}
 
-def index(request):
-    return render(request, "blog/index.html", context={"post": posts[::-1]})
-
-
-def category_posts(request, category_slug):
-    return render(request,
-                  "blog/category.html",
-                  context={"post": category_slug}
-                  )
-
-
-def post_detail(request, post_id):
-    return render(request,
-                  "blog/detail.html",
-                  context={"post": new_posts[post_id]}
-                  )
-# Не смог найти информацию как перехватывать ситуацию, когда поста
-# с таким идентификатором нет...
+print(new_posts, sep='\n')
