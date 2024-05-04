@@ -1,4 +1,5 @@
 from django.shortcuts import render  # type: ignore
+from django.http import Http404  # type: ignore
 
 
 posts = [
@@ -45,11 +46,13 @@ posts = [
 ]
 
 # Если правильно понял, словарь {идентификатор: пост с таким идентификатором}
-new_posts = {post["id"]: post for post in posts}
+POSTS = {post["id"]: post for post in posts}
 
 
 def index(request):
-    return render(request, "blog/index.html", context={"post": posts[::-1]})
+    return render(request, "blog/index.html",
+                  context={"post": posts[::-1]}
+                  )
 
 
 def category_posts(request, category_slug):
@@ -60,9 +63,11 @@ def category_posts(request, category_slug):
 
 
 def post_detail(request, post_id):
+    try:
+        POSTS[post_id]
+    except KeyError:
+        raise Http404("Запрашиваемая запись не найдена")
     return render(request,
                   "blog/detail.html",
-                  context={"post": new_posts[post_id]}
+                  context={"post": POSTS[post_id]}
                   )
-# Не смог найти информацию как перехватывать ситуацию, когда поста
-# с таким идентификатором нет...
