@@ -51,23 +51,18 @@ POSTS = {post["id"]: post for post in posts}
 
 def index(request):
     return render(request, "blog/index.html",
-                  context={"post": posts[::-1]}
-                  )
+                  context={"post": posts[::-1]})
 
 
 def category_posts(request, category_slug):
-    return render(request,
-                  "blog/category.html",
-                  context={"post": category_slug}
-                  )
+    return render(request, "blog/category.html",
+                  context={"post": category_slug})
 
 
 def post_detail(request, post_id):
     try:
         POSTS[post_id]
+        return render(request, "blog/detail.html",
+                      context={"post": POSTS[post_id]})
     except KeyError:
         raise Http404("Запрашиваемая запись не найдена")
-    return render(request,
-                  "blog/detail.html",
-                  context={"post": POSTS[post_id]}
-                  )
