@@ -61,7 +61,6 @@ def category_posts(request, category_slug):
 
 def post_detail(request, post_id):
     try:
-        POSTS[post_id]
         return render(request, "blog/detail.html",
                       context={"post": POSTS[post_id]})
     except KeyError:
